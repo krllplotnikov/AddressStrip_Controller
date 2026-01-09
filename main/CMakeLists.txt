@@ -1,10 +1,22 @@
-# See the build system documentation in IDF programming guide
-# for more information about component CMakeLists.txt files.
-
 idf_component_register(
-    SRCS main.c         # list the source files of this component
-    INCLUDE_DIRS        # optional, add here public include directories
-    PRIV_INCLUDE_DIRS   # optional, add here private include directories
-    REQUIRES            # optional, list the public requirements (component names)
-    PRIV_REQUIRES       # optional, list the private requirements
+    SRCS 
+    "main.c"
+    
+    "./libraries/AddressStrip/src/WS2812B.c"
+    "./libraries/AddressStrip/src/WS2812B_Utils.c"
+    "./libraries/AddressStrip/src/AddressStrip.c"
+
+    "./modules/Periphery.c"
+    "./modules/SPIFFS.c"
+    "./modules/ESPNOW.c"
+    
+    INCLUDE_DIRS 
+    "."
+    "./libraries/AddressStrip/src/"
+    "./modules/"
+    
+    PRIV_REQUIRES
+    REQUIRES
 )
+
+spiffs_create_partition_image(storage ../partition FLASH_IN_PROJECT)

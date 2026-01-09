@@ -1,0 +1,6 @@
+[submodule "main/libraries/AddressStrip"]
+	path = main/libraries/AddressStrip
+	url = https://github.com/krllplotnikov-libraries/AddressStrip.git
+[submodule "main/libraries/FFT"]
+	path = main/libraries/FFT
+	url = https://github.com/krllplotnikov-libraries/FFT.git
