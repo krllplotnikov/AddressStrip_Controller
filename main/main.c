@@ -7,16 +7,17 @@
 
 #include "Periphery.h"
 
+#include "Settings.h"
+
 void AddressStrip_Task(){
 	while(1){
-		printf("Hello!\r\n");
-		vTaskDelay(1000);
+		vTaskDelay(pdMS_TO_TICKS(1000));
 	}
 }
 
 void FFT_Task(){
 	while(1){
-		vTaskDelay(1);
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
 
@@ -27,6 +28,10 @@ void app_main(void)
 	
 	NVS_Init();
 	WiFi_Init();
+	
+	SPIFFS_Init("/storage");
+	
+	Settings_Init();
 	
 	xTaskCreate(AddressStrip_Task, NULL, 8096, NULL, 0, NULL);
 	xTaskCreate(FFT_Task, NULL, 8096 * 4, NULL, 20, NULL);

@@ -9,6 +9,7 @@ idf_component_register(
     "./modules/Periphery.c"
     "./modules/SPIFFS.c"
     "./modules/ESPNOW.c"
+    "./modules/Settings.c"
     
     INCLUDE_DIRS 
     "."
