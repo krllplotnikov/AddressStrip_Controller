@@ -3,8 +3,9 @@
 Settings_st settings = {0};
 
 void Settings_Init(){
-	uint8_t rb = SPIFFS_ReadFile("/storage/settings.bin", (uint8_t*)&settings, sizeof(settings));
-	if(rb != sizeof(settings)){
+	SPIFFS_Init("/storage");
+	uint8_t rb = SPIFFS_ReadFile("/storage/settings.bin", (uint8_t*)&settings, sizeof(Settings_st));
+	if(rb != sizeof(Settings_st)){
 		Settings_SetDefault();
 		Settings_Save();
 	}
@@ -17,5 +18,13 @@ void Settings_SetDefault(){
 }
 
 void Settings_Save(){
-	SPIFFS_WriteFile("/storage/settings.bin", (uint8_t*)&settings, sizeof(settings));
+	SPIFFS_WriteFile("/storage/settings.bin", (uint8_t*)&settings, sizeof(Settings_st));
+}
+
+void Settings_SetHue(uint8_t hue){
+	settings.hue = hue;
+}
+
+uint8_t Settings_GetHue(){
+	return settings.hue;
 }

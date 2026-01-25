@@ -1,3 +1,6 @@
+#ifndef SETTINGS_H_
+#define SETTINGS_H_
+
 #include "SPIFFS.h"
 
 typedef struct{
@@ -21,3 +24,8 @@ typedef struct{
 void Settings_Init();
 void Settings_SetDefault();
 void Settings_Save();
+
+void Settings_SetHue(uint8_t hue);
+uint8_t Settings_GetHue();
+
+#endif /* SETTINGS_H_ */

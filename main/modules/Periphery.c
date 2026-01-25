@@ -8,8 +8,7 @@
 #define I2S_SCK_GPIO_NUM 9
 #define I2S_PORT I2S_NUM_0
 
-#define NUM_SAMPLES 256
-#define SAMPLE_RATE 16000
+int16_t i2sBuffer[NUM_SAMPLES];
 
 rmt_encoder_handle_t simple_encoder = NULL;
 rmt_channel_handle_t led_chan = NULL;
@@ -92,8 +91,7 @@ void I2S_Init(){
                                    .sample_rate = SAMPLE_RATE,
                                    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
                                    .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
-                                   .communication_format =
-                                       I2S_COMM_FORMAT_STAND_I2S,
+                                   .communication_format = I2S_COMM_FORMAT_STAND_I2S,
                                    .intr_alloc_flags = 0,
                                    .dma_buf_count = 8,
                                    .dma_buf_len = NUM_SAMPLES,
@@ -125,4 +123,21 @@ void WiFi_Init(){
 	esp_wifi_set_storage(WIFI_STORAGE_FLASH);
 	esp_wifi_init(&wifi_init_config);
 	esp_wifi_start();
+}
+
+
+
+
+void RMT_Transmit(void* payload, size_t payloadBytes){
+    rmt_transmit(led_chan, simple_encoder, (uint8_t*)payload, payloadBytes, &tx_config);
+    rmt_tx_wait_all_done(led_chan, 100);
+}
+
+int16_t* I2S_Read(size_t* bytesRead){
+	esp_err_t result = i2s_read(I2S_PORT, &i2sBuffer, NUM_SAMPLES, bytesRead, portMAX_DELAY);
+	if (result == ESP_OK)
+	{
+		return i2sBuffer;
+	}
+	return NULL;
 }
