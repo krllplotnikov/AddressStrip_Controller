@@ -27,18 +27,19 @@ AddressStrip_st addressStrip = {0};
 void AddressStrip_Task(){
 	while (1) {
 		AddressStrip_Run(&addressStrip);
-		vTaskDelay(pdMS_TO_TICKS(10));
+		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }
 
 void Change_Task(){
 	while (1) {
-		AddressStrip_SetEffectSpeed(&addressStrip, 0);
-		vTaskDelay(pdMS_TO_TICKS(5000));
-		AddressStrip_SetEffectSpeed(&addressStrip, 255);
-		vTaskDelay(pdMS_TO_TICKS(5000));
-		//AddressStrip_SetNumberLeds(&addressStrip, 360);
-		//vTaskDelay(pdMS_TO_TICKS(1000));
+		if(AddressStrip_IsColorMusicReady(&addressStrip)){
+			int16_t *pBuf = NULL;
+    		size_t bytes = 0;
+    		pBuf = I2S_Read(&bytes);
+    		AddressStrip_UpdateColorMusicSignal(&addressStrip, pBuf);
+		}
+		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }
 
@@ -53,10 +54,13 @@ void app_main(void) {
   WS2812B_Init(&strip, &stripFunctions);
   AddressStrip_Init(&addressStrip, &strip);	
   
-  AddressStrip_SetNumberLeds(&addressStrip, 10);
+  AddressStrip_SetBrightness(&addressStrip, 100);
+  AddressStrip_SetNumberLeds(&addressStrip, 60);
   AddressStrip_SetEffect(&addressStrip,ADDRESS_STRIP_EFFECT_RAINBOW);
-  AddressStrip_SetMode(&addressStrip, ADDRESS_STRIP_MODE_EFFECT);
+  AddressStrip_SetColorMusic(&addressStrip,ADDRESS_STRIP_COLOR_MUSIC_SPECTRE);
+  AddressStrip_SetColorMusicSpeed(&addressStrip,0);
+  AddressStrip_SetMode(&addressStrip, ADDRESS_STRIP_MODE_COLOR_MUSIC);
   
-  xTaskCreate(AddressStrip_Task, NULL, 8192, NULL, 0, NULL);
+  xTaskCreate(AddressStrip_Task, NULL, 8192, NULL, 20, NULL);
   xTaskCreate(Change_Task, NULL, 8192, NULL, 0, NULL);
 }
