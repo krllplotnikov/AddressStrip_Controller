@@ -54,12 +54,13 @@ void app_main(void) {
   WS2812B_Init(&strip, &stripFunctions);
   AddressStrip_Init(&addressStrip, &strip);	
   
-  AddressStrip_SetBrightness(&addressStrip, 100);
+  AddressStrip_SetBrightness(&addressStrip, 10);
   AddressStrip_SetNumberLeds(&addressStrip, 60);
-  AddressStrip_SetEffect(&addressStrip,ADDRESS_STRIP_EFFECT_RAINBOW);
-  AddressStrip_SetColorMusic(&addressStrip,ADDRESS_STRIP_COLOR_MUSIC_SPECTRE);
+  AddressStrip_SetEffect(&addressStrip,ADDRESS_STRIP_EFFECT_RAINBOW_LOOP);
+  AddressStrip_SetEffectSpeed(&addressStrip,25);
+  AddressStrip_SetColorMusic(&addressStrip,ADDRESS_STRIP_COLOR_MUSIC_RAINBOW_TRAIN);
   AddressStrip_SetColorMusicSpeed(&addressStrip,0);
-  AddressStrip_SetMode(&addressStrip, ADDRESS_STRIP_MODE_COLOR_MUSIC);
+  AddressStrip_SetMode(&addressStrip, ADDRESS_STRIP_MODE_EFFECT);
   
   xTaskCreate(AddressStrip_Task, NULL, 8192, NULL, 20, NULL);
   xTaskCreate(Change_Task, NULL, 8192, NULL, 0, NULL);
