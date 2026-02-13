@@ -10,6 +10,7 @@ idf_component_register(
     "./modules/Periphery.c"
     "./modules/SPIFFS.c"
     "./modules/Settings.c"
+    "./modules/BLEServer.c"
     
     INCLUDE_DIRS 
     "."
