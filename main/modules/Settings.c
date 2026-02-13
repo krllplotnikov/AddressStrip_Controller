@@ -25,6 +25,14 @@ void Settings_SetHue(uint8_t hue){
 	settings.hue = hue;
 }
 
+void Settings_SetNumLeds(uint16_t numLeds){
+	settings.numLeds = numLeds;
+}
+
 uint8_t Settings_GetHue(){
 	return settings.hue;
+}
+
+uint16_t Settings_GetNumLeds(){
+	return settings.numLeds;
 }

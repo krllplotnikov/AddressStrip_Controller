@@ -26,6 +26,8 @@ void Settings_SetDefault();
 void Settings_Save();
 
 void Settings_SetHue(uint8_t hue);
+void Settings_SetNumLeds(uint16_t numLeds);
 uint8_t Settings_GetHue();
+uint16_t Settings_GetNumLeds();
 
 #endif /* SETTINGS_H_ */
