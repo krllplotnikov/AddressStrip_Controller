@@ -25,6 +25,8 @@ WS2812B_UserFunctions_st stripFunctions = {.sendData = SendData_WS2812B, .getTic
 
 AddressStrip_st addressStrip = {0};
 
+uint32_t settingsChangeTime = 0;
+
 void AddressStrip_Task(){
 	while (1) {
 		AddressStrip_Run(&addressStrip);
@@ -41,6 +43,16 @@ void Microphone_Task(){
     		AddressStrip_UpdateColorMusicSignal(&addressStrip, pBuf);
 		}
 		vTaskDelay(pdMS_TO_TICKS(1));
+	}
+}
+
+void Settings_Task(){
+	while (1) {
+		if(SettingsGetUpdateFlag() && (settingsChangeTime + 5000 < GetTick())){
+			SettingsSetUpdateFlag(0);
+			Settings_Save();
+		}
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
 
@@ -75,6 +87,7 @@ void app_main(void) {
   
   xTaskCreate(AddressStrip_Task, NULL, 8192, NULL, 20, NULL);
   xTaskCreate(Microphone_Task, NULL, 4096, NULL, 0, NULL);
+  xTaskCreate(Settings_Task, NULL, 4096, NULL, 0, NULL);
 }
 
 void BLEServer_ClientRead_Callback(uint8_t* data, uint16_t* len){
@@ -108,8 +121,9 @@ void BLEServer_ClientWrite_Callback(uint8_t* data, uint16_t* len){
 		Settings_SetBrightness(data[1]);
 	}
 	if(data[0] == 0x04){
-		AddressStrip_SetHue(&addressStrip, data[1]);
-		Settings_SetHue(data[1]);
+		uint16_t hue = (data[1] << 8) | data[2];
+		AddressStrip_SetHue(&addressStrip, hue);
+		Settings_SetHue(hue);
 	}
 	if(data[0] == 0x05){
 		AddressStrip_SetSaturation(&addressStrip, data[1]);
@@ -130,6 +144,7 @@ void BLEServer_ClientWrite_Callback(uint8_t* data, uint16_t* len){
 	if(data[0] == 0x09){
 		AddressStrip_SetColorMusicSpeed(&addressStrip, data[1]);
 		Settings_SetColorMusicSpeed(data[1]);
-	}
-	Settings_Save();							
+	}					
+	SettingsSetUpdateFlag(1);
+	settingsChangeTime = GetTick();	
 }

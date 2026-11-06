@@ -2,6 +2,7 @@
 #include "AddressStrip.h"
 
 Settings_st settings = {0};
+SettingsControl_st settingsControl = {0};
 
 void Settings_Init(){
 	SPIFFS_Init("/storage");
@@ -47,7 +48,7 @@ void Settings_SetBrightness(uint8_t brightness){
 	settings.brightness = brightness;
 }
 
-void Settings_SetHue(uint8_t hue){
+void Settings_SetHue(uint16_t hue){
 	settings.hue = hue;
 }
 void Settings_SetSaturation(uint8_t saturation){
@@ -70,6 +71,9 @@ void Settings_SetColorMusicSpeed(uint8_t colorMusicSpeed){
 	settings.colorMusicSpeed = colorMusicSpeed;
 }
 
+void SettingsSetUpdateFlag(uint8_t flag){
+	settingsControl.updateFlag = flag;
+}
 
 
 
@@ -110,4 +114,8 @@ uint8_t Settings_GetColorMusic(){
 
 uint8_t Settings_GetColorMusicSpeed(){
 	return settings.colorMusicSpeed;
+}
+
+uint8_t SettingsGetUpdateFlag(){
+	return settingsControl.updateFlag;
 }
