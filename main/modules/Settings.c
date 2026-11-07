@@ -93,7 +93,7 @@ uint8_t Settings_GetBrightness(){
 	return settings.brightness;
 }
 
-uint8_t Settings_GetHue(){
+uint16_t Settings_GetHue(){
 	return settings.hue;
 }
 uint8_t Settings_GetSaturation(){

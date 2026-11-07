@@ -1,11 +1,11 @@
 #include "Periphery.h"
 
 #define RMT_LED_STRIP_RESOLUTION_HZ 10000000 // 10MHz resolution, 1 tick = 0.1us (led strip needs a high resolution)
-#define RMT_LED_STRIP_GPIO_NUM      21
+#define RMT_LED_STRIP_GPIO_NUM      7
 
-#define I2S_WS_GPIO_NUM 10
-#define I2S_SD_GPIO_NUM 20
-#define I2S_SCK_GPIO_NUM 9
+#define I2S_WS_GPIO_NUM 5
+#define I2S_SD_GPIO_NUM 6
+#define I2S_SCK_GPIO_NUM 4
 #define I2S_PORT I2S_NUM_0
 
 int16_t i2sBuffer[NUM_SAMPLES];
